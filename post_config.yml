@@ -1,0 +1,12 @@
+---
+- name: "Setup new globgal DNS configuration to take the new nameserver into account"
+  hosts: all
+  remote_user: root
+  vars:
+    - domain : "naoufelmhadhbi.tn"
+
+  tasks:
+  - name: configure new DNS configuration globally
+    template:
+      src: resolv.conf.j2
+      dest: /etc/resolv.conf

@@ -1,0 +1,15 @@
+$TTL    86400
+@       IN      SOA     {{ ansible_hostname }}.{{ domain }}. root.{{ domain }}. (
+                2019061401   ; serial
+                7200         ; refresh after 2 hours 
+                3600         ; retry after 1 hour
+                604800       ; expire after 1 week
+                86400 )      ; minimum TTL of 1 day
+;
+; Primary nameserver
+@       IN      NS      {{ ansible_hostname }}.{{ domain }}.
+; PTR records for reverse lookup
+4       IN      PTR     {{ ansible_hostname }}.{{ domain }}.
+5	IN	PTR	ansible-master.{{ domain }}.
+6     IN      PTR     webserver01.{{ domain }}.
+8     IN      PTR     webserver02.{{ domain }}.

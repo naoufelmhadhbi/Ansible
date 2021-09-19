@@ -1,0 +1,16 @@
+$TTL    86400
+@       IN      SOA     {{ ansible_hostname }}.{{ domain }}. root.{{ domain }}. (
+                2019061401   ; serial
+                7200         ; refresh after 2 hours 
+                3600         ; retry after 1 hour
+                604800       ; expire after 1 week
+                86400 )      ; minimum TTL of 1 day
+;
+; Primary Nameserver
+        IN      NS      {{ ansible_hostname }}.{{ domain }}.
+;
+; Define A records (forward lookups)
+{{ ansible_hostname }}     IN      A	10.0.2.4 
+ansible-master     IN      A	10.0.2.5
+webserver01        IN      A       {{ webserver01_ip }}
+webserver02        IN      A       {{ webserver02_ip }}

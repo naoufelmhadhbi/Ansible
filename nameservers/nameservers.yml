@@ -1,0 +1,42 @@
+---
+- name: "Install & configure a DNS server (BIND9) on nameservers host list"
+  hosts: nameservers
+  remote_user: root
+  vars:
+    - domain : "naoufelmhadhbi.tn"
+      webserver01_ip: "10.0.2.6"
+      webserver02_ip: "10.0.2.8"
+
+  tasks:
+  - name: Install python-apt dependency package 
+    apt:
+      name: python-apt
+      state: latest
+
+  - name: Install the latest BIND9 package 
+    apt:
+      name: bind9
+      state: latest
+
+  - name: copy forward & reverse zone configuration file
+    template:
+      src: named.conf.local.j2 
+      dest: /etc/bind/named.conf.local
+ 
+  - name: copy forward DNS records file
+    template:
+      src: db.domain.j2
+      dest: /etc/bind/db.{{ domain }}   
+
+  - name: copy reverse DNS records file
+    template:
+      src: rev.db.domain.j2
+      dest: /etc/bind/rev.db.{{ domain }}
+    notify:
+      - restart-bind9
+
+  handlers:
+    - name: restart-bind9
+      service:
+        name: bind9
+        state: restarted
